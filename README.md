@@ -1,6 +1,6 @@
 LOC za Calculator.java iznosi 148 dok Start.java iznosi 26
 
-Calculator.java
+Calculator.java - zapazanja
 
 Linija 10 – Korišćenje statičke promenljive finalResult može dovesti do problema u višedretvenom okruženju. Preporuka: vratiti rezultat kao povratnu vrednost metode.
 
@@ -15,6 +15,8 @@ Linije 58–119 – Metoda Calculate je dugačka, rekurzivna i složena. U sluč
 Višestruke linije – Promenljiva result koristi +=, a vrednost se zapravo uvek postavlja, tako da običan = bi bio sasvim dovoljan.
 
 Opšti problem – Iako su operatori definisani u Operations, neka njihova upotreba u kodu je ipak hardkodovana i nejasna.
+
+Start.java - zapazanja
 
 6 – String Expression; – Java naming konvencija preporučuje mala slova za promenljive (expression). CamelCase samo za klase.
 
