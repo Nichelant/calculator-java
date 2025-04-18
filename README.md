@@ -1,33 +1,61 @@
-LOC za Calculator.java iznosi 107 dok Start.java iznosi 25 sto znaci da zajedno imaju 132
+# Softverska analiza projekta: Kalkulator
 
-Calculator.java - zapazanja
+##  LOC analiza
 
-Linija 10 – Korišćenje statičke promenljive finalResult može dovesti do problema u višedretvenom okruženju. Preporuka: vratiti rezultat kao povratnu vrednost metode.
+Broj linija koda (LOC - Lines of Code):
 
-Linija 18 – Ime metode ToString() ne poštuje Java konvenciju. Trebalo bi da se zove toString().
+- `Calculator.java` – **107 LOC**
+- `Start.java` – **25 LOC**
+- **Ukupno:** **132 LOC** 
 
-Linija 29 – Višestruko proveravanje karaktera pomoću if uslova – moglo bi da se refaktoriše u pomoćnu metodu isOperator(char).
+LOC je računat kao broj svih linija koje sadrže neku vrstu koda (bez praznih linija i komentara).
 
-Linije 35–56 – Parsiranje brojeva i detekcija Infinity ručno. U slučaju greške, vraća "ERROR" bez detalja. Bolje bi bilo vratiti jasnu poruku korisniku.
+---
 
-Linije 58–119 – Metoda Calculate je dugačka, rekurzivna i složena. U slučaju dubljih izraza može izazvati „StackOverflow“. Bolje rešenje bi bilo koristiti stog (stack) i iteraciju.
+##  Neformalni pregled i statička analiza
 
-Višestruke linije – Promenljiva result koristi +=, a vrednost se zapravo uvek postavlja, tako da običan = bi bio sasvim dovoljan.
+Ovo su neka zapažanja do kojih sam došao pregledom koda (nisam pokretao aplikaciju, samo sam gledao strukturu i sintaksu).
 
-Opšti problem – Iako su operatori definisani u Operations, neka njihova upotreba u kodu je ipak hardkodovana i nejasna.
+---
 
-Start.java - zapazanja
+###  `Calculator.java`
 
-6 – String Expression; – Java naming konvencija preporučuje mala slova za promenljive (expression). CamelCase samo za klase.
+- **Linija 8** – `static float finalResult;`  
+  → Mislim da bi možda bilo bolje da se izbegne statički rezultat jer može praviti probleme u više niti ili paralelnom izvršavanju. 
 
-7 – boolean active = true; – korektno, ali nije baš najlepši način za prekid petlje. Mozda je bolje while (true) + break?
+- **Linija 10–18** – Unutrašnja klasa `Operations`  
+  → Deluje kao dobra ideja da se grupišu konstante, ali možda bi mogla biti u posebnom fajlu ako projekt bude veći. 
 
-9 – Scanner scanIn; definisan van petlje, ali se pravi novi objekat u svakoj iteraciji. 
+- **Linija 22** – `public static String Run(String expression)`  
+  → Ime metode `Run` mi deluje kao da je vezano za pokretanje procesa, ali zapravo se ovde evaluira izraz. Možda bi `evaluate()` bilo malo jasnije. 
 
-11 – scanIn = new Scanner(System.in); – kreira se novi Scanner svaki put, što ja mislim da je losa praksa. Mozda je najbolje napraviti jednom van petlje
+- **Linije 29–35** – Provera prvog karaktera izraza  
+  → Verovatno bi korisnicima koji ne znaju format izraza prijalo više validacije, npr. kad unesu nešto pogrešno (slova, više operatora zaredom i slično). 
 
-13 – if (Expression.equals("exit")) – solidna provera, ali bilo bi bolje da se koristi equalsIgnoreCase() za fleksibilniji unos.
+- **Linije 38–43** – Parsiranje operatora  
+  → Ovaj deo mi deluje ok, ali možda bi mogla da se koristi RegEx grupa za operatore radi boljeg održavanja. 
 
-14 – scanIn.close(); – dobra ideja, ali ako se skenira jednom,išlo bi van petlje. Moze da dođe do "Scanner closed" greške ako korisnik unese nesto nakon exit.
+- **Linije 45–58** – Parsiranje brojeva  
+  → Try-catch blok je ok, ali nisam siguran da se razlikuju svi potencijalni problemi (npr. NaN, razmak, loš unos). 
 
-17 – System.out.println(Calculator.Run(Expression)); – ovo je okej, ali nema validacije izraza pre slanja. Ako korisnik unese @!# – izbacuje ERROR, što je okej, ali UX može biti bolji.
+- **Linije 60–128** – Metoda `Calculate`  
+  → Ova rekurzivna logika je zanimljiva, ali verovatno može doći do stack overflow-a ako ima baš mnogo operacija. Možda bi iterativni pristup bio sigurniji.  
+  → Takođe, ima dosta ponavljanja istih linija koda — moguće je to refaktorisati. 
+
+---
+
+###  `Start.java`
+
+- **Linija 9** – `Scanner scanIn;`  
+  → Možda nepotrebno da se skener instancira više puta unutar petlje. Bilo bi čisto da je van `while` petlje, pa da se koristi kroz ceo program. 
+
+- **Linija 14** – `if (Expression.equals("exit"))`  
+  → Ovde bi bilo korisno dodati da se ignorišu velika i mala slova (`equalsIgnoreCase`), da korisniku bude lakše. 
+
+- **Generalno**  
+  → Kod je čitljiv i jednostavan, ali mislim da bi dodavanje više komentara pomoglo onima koji prvi put čitaju.   
+  → Moglo bi da se koristi više validacije korisničkog unosa (npr. ako korisnik unese „5++2“ ili neko slovo).
+
+---
+
+
