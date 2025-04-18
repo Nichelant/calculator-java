@@ -1,3 +1,1 @@
-Ukupan broj linije koda (bez praznih) je 117.
-Calculator.java : 95
-Start.java : 22
+LOC za Calculator.java iznosi 148 dok Start.java iznosi 26
