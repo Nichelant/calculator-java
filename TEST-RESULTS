@@ -1,0 +1,32 @@
+TEST-RESULTS
+
+Detektovani propusti i nedostaci:
+
+1. Deljenje sa nulom
+   - Deljenje sa nulom vraća "Infinity" umesto jasno definisane greške.
+
+2. Nepostojanje validacije izraza
+   - Kod izraza kao što je "5++3" dolazi do greške bez jasnog objašnjenja korisniku.
+
+3. Neobrađeni razmaci u izrazu
+   - Ako korisnik unese izraz sa razmacima (npr. "5 + 3"), kalkulator baca grešku jer se razmaci ne uklanjaju automatski.
+
+4. Nema podrške za zagrade
+   - Kalkulator ne podržava izraze sa zagradama (npr. "(5+3)*2"), što značajno smanjuje funkcionalnost.
+
+5. Generičko rukovanje greškama
+   - Za sve greške vraća se samo tekst "ERROR" bez dodatnih informacija o uzroku greške.
+
+Uspešno prošli testovi:
+
+- Jednostavne operacije sabiranja, oduzimanja, množenja i deljenja rade ispravno.
+- Izrazi koji počinju sa znakovima "+" ili "-" se pravilno interpretiraju.
+- Prioritet računskih operacija (* i / pre + i -) se pravilno poštuje.
+
+Preporučene aktivnosti:
+
+- Implementirati proveru validnosti izraza pre računanja (npr. da se spreči unos "5++3").
+- Ukloniti sve razmake iz izraza pre parsiranja.
+- Vraćati korisniku detaljnije informacije o vrsti greške (npr. "Greška: Nedozvoljena upotreba operatora", "Greška: Deljenje sa nulom").
+- Planirati proširenje funkcionalnosti za podršku izraza sa zagradama.
+
